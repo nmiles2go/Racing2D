@@ -30,9 +30,16 @@ int main()
     S_Car.scale({ 0.95f, 0.95f });
     
     // Car movement variables
-    float speed = 0.0f;
+    float speed = 1.0f;
+    float maxSpeed = 12.0f;
     float accelaration = 0.3f;
     
+    float x = 300.0f;
+    float y = 300.0f;
+
+    float angle = 0.0f;
+    float turnSpeed = 0.08f;
+
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
@@ -55,21 +62,35 @@ int main()
 
         // When key pressed (WASD), boolean values change to true
 
-        bool up    = 0;
-        bool down  = 0;
-        bool left  = 0;
-        bool right = 0;
+        bool goUp    = 0;
+        bool goDown  = 0;
+        bool goLeft  = 0;
+        bool goRight = 0;
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) goLeft = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) goRight = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) goUp = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) goDown = 1;
+        
+        // std::cout << goLeft << "\t" << goRight << "\t" << goUp << "\t" << goDown << "\n"; // DEBUG_LINE
+
+        // Adding Car movement
+        if (goLeft && speed)// < maxSpeed) 
+        {
+            speed += accelaration;
             
-            
-            S_Car.setPosition({ 0.0f,0.0f });
         }
         
+        x = speed;
+        std::cout << speed << "\t\n";
+        S_Car.setPosition({x,y});
 
+        
         window.clear(sf::Color(158,123,123,0));
         window.draw(S_Background);
         window.draw(S_Car);
+
+
         window.display();
     }
 }
