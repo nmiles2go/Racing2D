@@ -1,4 +1,6 @@
 ﻿#include<iostream>
+#include<math.h>
+
 #include"SFML/Graphics.hpp"
 #include"SFML/Audio.hpp"
 
@@ -30,15 +32,16 @@ int main()
     S_Car.scale({ 0.95f, 0.95f });
     
     // Car movement variables
-    float speed = 1.0f;
-    float maxSpeed = 12.0f;
-    float accelaration = 0.3f;
+    float speed          = 0.0f;
+    float angle          = 0.0f;
+    float maxSpeed       = 5.0f;
+    float accelaration   = 0.3f;
+    float deaccelaration = 0.2f;
+    float turnSpeed      = 0.08f;
     
-    float x = 300.0f;
-    float y = 300.0f;
+    float carPositionX   = S_Car.getPosition().x;
+    float carPositionY   = S_Car.getPosition().y;
 
-    float angle = 0.0f;
-    float turnSpeed = 0.08f;
 
     while (window.isOpen())
     {
@@ -50,8 +53,6 @@ int main()
 
         // Getting input from keyboard
 
-        //////////////////////////////////////////////////////////
-
 
         //   ██╗    ██╗ █████╗ ███████╗██████╗
         //   ██║    ██║██╔══██╗██╔════╝██╔══██╗
@@ -60,6 +61,9 @@ int main()
         //   ╚███╔███╔╝██║  ██║███████║██████╔╝
         //    ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚═════╝
 
+        
+        
+        
         // When key pressed (WASD), boolean values change to true
 
         bool goUp    = 0;
@@ -75,15 +79,34 @@ int main()
         // std::cout << goLeft << "\t" << goRight << "\t" << goUp << "\t" << goDown << "\n"; // DEBUG_LINE
 
         // Adding Car movement
-        if (goLeft && speed)// < maxSpeed) 
+        if (goRight && speed < maxSpeed) 
         {
             speed += accelaration;
-            
         }
         
-        x = speed;
+        
+        else if (!goRight)
+        {
+            speed -= deaccelaration;
+
+            if (speed < 0.0f)
+            {
+                speed = 0.0f;
+            }
+        }
+
+        if (goLeft)
+        {
+            speed -= accelaration;
+        }
+
+        
+
+        carPositionX +=  speed;
         std::cout << speed << "\t\n";
-        S_Car.setPosition({x,y});
+        S_Car.setPosition({carPositionX,carPositionY});
+        S_Background.setPosition({ -S_Car.getPosition().x, -S_Car.getPosition().y }); // Linking "camera" background speed with speed of car!
+                                                                                      // BAD I THINK?
 
         
         window.clear(sf::Color(158,123,123,0));
