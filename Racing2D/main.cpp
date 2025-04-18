@@ -32,7 +32,7 @@ int main()
     // Car movement variables
     float speed          = 0.0f;
     float angle          = 0.0f;
-    float maxSpeed       = 5.0f;
+    float maxSpeed       = 8.0f;
     float accelaration   = 0.3f;
     float deaccelaration = 0.2f;
     float turnSpeed      = 0.08f;
@@ -93,26 +93,35 @@ int main()
 
 
 
-        else if (!goUp)
+        if (!goUp && !goDown && fabs(speed) > 0) // deaccelation not working
         {
-            speed += deaccelaration;
-
-            if (speed > 0.0f)
+            if (!goUp) 
             {
-                speed = 0.0f;
+
+                speed += deaccelaration;
+
+                if (speed > 0.0f)
+                {
+                    speed = 0.0f;
+                }
+            }
+
+            else if (!goDown) 
+            {
+
+                speed -= deaccelaration;
+
+                if (speed < 0.0f)
+                {
+                    speed = 0.0f;
+                }
             }
 
         }
 
-        /*else if (!goDown)
-        {
-            speed = speed - deaccelaration;
-
-            if (speed < 0.0f)
-            {
-                speed = 0.0f;
-            }
-        }*/
+        
+        
+        
         
 
         
