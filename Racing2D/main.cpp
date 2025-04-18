@@ -5,8 +5,6 @@
 #include"SFML/Audio.hpp"
 
 
-
-
 int main()
 {
     // Creating window for our game
@@ -62,50 +60,69 @@ int main()
         //    ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚═════╝
 
         
-        
+        // W to Move Forward
+        // S to Move Backward
+        // A to Turn Left
+        // D to Turn Right
         
         // When key pressed (WASD), boolean values change to true
 
         bool goUp    = 0;
         bool goDown  = 0;
-        bool goLeft  = 0;
-        bool goRight = 0;
+        bool turnLeft  = 0;
+        bool turnRight = 0;
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) goLeft = 1;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) goRight = 1;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) goUp = 1;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) goDown = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) turnLeft = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) turnRight = 1;
         
         // std::cout << goLeft << "\t" << goRight << "\t" << goUp << "\t" << goDown << "\n"; // DEBUG_LINE
 
         // Adding Car movement
-        if (goRight && speed < maxSpeed) 
+        
+        if (goUp && fabs(speed) < maxSpeed)
+        {
+            speed -= accelaration;
+        }
+
+        if (goDown && speed < maxSpeed)
         {
             speed += accelaration;
         }
-        
-        
-        else if (!goRight)
+
+
+
+        else if (!goUp)
         {
-            speed -= deaccelaration;
+            speed += deaccelaration;
+
+            if (speed > 0.0f)
+            {
+                speed = 0.0f;
+            }
+
+        }
+
+        /*else if (!goDown)
+        {
+            speed = speed - deaccelaration;
 
             if (speed < 0.0f)
             {
                 speed = 0.0f;
             }
-        }
-
-        if (goLeft)
-        {
-            speed -= accelaration;
-        }
+        }*/
+        
 
         
 
-        carPositionX +=  speed;
+        
+
+        carPositionY +=  speed;
         std::cout << speed << "\t\n";
         S_Car.setPosition({carPositionX,carPositionY});
-        S_Background.setPosition({ -S_Car.getPosition().x, -S_Car.getPosition().y }); // Linking "camera" background speed with speed of car!
+        //S_Background.setPosition({ -carPositionX, -carPositionY }); // Linking "camera" background speed with speed of car!
                                                                                       // BAD I THINK?
 
         
