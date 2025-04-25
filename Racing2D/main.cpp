@@ -26,13 +26,13 @@ int main()
 
     sf::Sprite S_Car = sf::Sprite(T_Car);
     S_Car.setOrigin({ 22.0f, 22.0f });
-    S_Car.setPosition({ 200.0f,200.0f });
+    S_Car.setPosition({ 200.0f,500.0f });
     S_Car.scale({ 0.95f, 0.95f });
 
     // Car movement variables
     float speed = 0.0f;
     float angle = 0.0f;
-    float maxSpeed = 2.0f; // changes made for testing revert back to 8.0 later
+    float maxSpeed = 1.0f; // changes made for testing revert back to 8.0 later
     float accelaration = 0.01f;// changes made for testing revert back to 0.3 later
     float deaccelaration = 0.2f;
     float turnSpeed = 0.08f;
@@ -84,16 +84,28 @@ int main()
         // Bug: When the velocity reaches above max speed (how?), then the car speed does not increase in the other direction.
 
        
-        if (goUp && speed < maxSpeed)
+        if (goUp && speed > -maxSpeed)
         {
             speed -= accelaration;
-            std::cout << (goUp && speed < maxSpeed) << "\n";
+            std::cout << speed << "\n";
+
+            // if((speed - maxSpeed) > 0.0001 && 
         }
 
-        if (goDown && speed > -maxSpeed)
+        /*if (goDown && speed > -maxSpeed)
         {
             speed += accelaration;
-            std::cout << (goDown && speed > -maxSpeed) << "\n";
+            std::cout << (goDown && speed > -maxSpeed) << "\t\t" << speed << "\n";
+        }*/
+
+        else if (!goUp)
+        {
+            speed += deaccelaration;
+            if (speed > 0.0f)
+            {
+                speed = 0.0f;
+            }
+            std::cout << speed << "\n";
         }
 
 
